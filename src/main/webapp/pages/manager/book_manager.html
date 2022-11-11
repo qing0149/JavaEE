@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="../../static/css/common.css" />
     <link rel="stylesheet" href="../../static/css/cart.css" />
     <link rel="stylesheet" href="../../static/css/bookManger.css" />
+    <script type="text/javascript" src="../../static/script/axios.js"></script>
+    <script type="text/javascript" src="../../static/script/vue.js"></script>
+
   </head>
   <body>
     <div class="header">
@@ -25,10 +28,10 @@
         </div>
       </div>
     </div>
-    <div class="list">
+    <div id="app" class="list">
       <div class="w">
         <div class="add">
-          <a href="book_edit.html">添加图书</a>
+          <a href="/pages/manager/book_edit.html">添加图书</a>
         </div>
         <table>
           <thead>
@@ -43,55 +46,42 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr th:each="book:${booksPage.dataList}">
               <td>
-                <img src="../../static/uploads/huozhe.jpg" alt="" />
+                <img th:src="${book.imgPath}" alt="" />
               </td>
-              <td>活着</td>
+              <td th:text="${book.title}"></td>
+              <td th:text="${book.price}"></td>
+              <td th:text="${book.author}"></td>
+              <td th:text="${book.sales}"></td>
+              <td th:text="${book.stock}"></td>
               <td>
-                100.00
-              </td>
-              <td>余华</td>
-              <td>200</td>
-              <td>400</td>
-              <td>
-                <a href="book_edit.html">修改</a><a href="" class="del">删除</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img src="../../static/uploads/huozhe.jpg" alt="" />
-              </td>
-              <td>活着</td>
-              <td>
-                100.00
-              </td>
-              <td>余华</td>
-              <td>200</td>
-              <td>400</td>
-              <td>
-                <a href="book_edit.html">修改</a><a href="" class="del">删除</a>
+                <a th:href="@{/updateBook(id=${book.id})}" >修改</a>
+                <a th:href="@{/deleteBook(id=${book.id})}" class="del">删除</a>
               </td>
             </tr>
+
           </tbody>
         </table>
         <div class="footer">
           <div class="footer-right">
-            <div>首页</div>
-            <div>上一页</div>
+            <div><a href="/allBooks">首页</a></div>
+            <div><a th:href="@{/allBooks(pageIndex=${booksPage.pageIndex-1<=0 ? 1: booksPage.pageIndex-1})}">上一页</a></div>
             <ul>
-              <li class="active">1</li>
-              <li>2</li>
-              <li>3</li>
+              <li th:each="k:${#numbers.sequence(1,booksPage.totalPages)}">
+                <a th:href="@{/allBooks(pageIndex=${k})}" th:text="${k}"></a>
+              </li>
             </ul>
-            <div>下一页</div>
-            <div>末页</div>
-            <span>共10页</span>
-            <span>30条记录</span>
-            <span>到第</span>
-            <input type="text" />
-            <span>页</span>
-            <button>确定</button>
+            <div><a th:href="@{/allBooks(pageIndex=${booksPage.pageIndex+1>= booksPage.totalPages? booksPage.totalPages:booksPage.pageIndex+1})}">下一页</a></div>
+            <div><a th:href="@{/allBooks(pageIndex=${booksPage.totalPages})}">末页</a></div>
+            <span th:text="'共'+${booksPage.totalPages}+'页'"></span>
+            <span th:text="${booksPage.totalCount}+'条记录'"></span>
+            <form action="/allBooks" method="get">
+              <span>到第</span>
+              <input type="text" name="pageIndex"/>
+              <span>页</span>
+              <button>确定</button>
+            </form>
           </div>
         </div>
       </div>

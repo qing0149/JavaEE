@@ -3,6 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <!--    设置全局变量-->
+    <context-param>
+        <param-name>code</param-name>
+        <param-value>utf-8</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view-prefix</param-name>
+        <param-value>/pages/</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view-suffix</param-name>
+        <param-value>.html</param-value>
+    </context-param>
+<!--    定义servlet进行吃实话-->
     <!--
         登录请求和处理类servlet的对应关系
         servlet自定义
@@ -10,16 +24,22 @@
         servlet-mapping需要和配对的那个servlet中servlet-name一致
         utl-pattern 请求地址,可以是form是form中定义的action
     -->
-<!--    <servlet>-->
-<!--        <servlet-name>aaa</servlet-name>-->
-<!--        <servlet-class>-->
-<!--            com.llkj.controller.LoginServlet-->
-<!--        </servlet-class>-->
-<!--    </servlet>-->
-<!--    <servlet-mapping>-->
-<!--        <servlet-name>aaa</servlet-name>-->
-<!--        <url-pattern>-->
-<!--            /pages/user/tologin-->
-<!--        </url-pattern>-->
-<!--    </servlet-mapping>-->
+    <servlet>
+        <servlet-name>aaa</servlet-name>
+        <servlet-class>
+            com.llkj.controller.LoginServlet
+        </servlet-class>
+<!--        配置初始化值-->
+        <init-param>
+            <param-name>code</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>aaa</servlet-name>
+        <url-pattern>
+            /pages/user/tologin
+        </url-pattern>
+    </servlet-mapping>
+
 </web-app>

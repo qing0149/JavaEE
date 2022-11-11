@@ -13,6 +13,16 @@ import java.util.List;
  * @Version 1.0
  */
 public interface BooksDao {
-    Integer addBooks(String title,String author,Double price,Integer sales,Integer stock );
+    Integer addBooks(String title, String author, Double price, Integer sales, Integer stock);
+
     List<Books> selectAllBooks();
+    List<Books> selectAllBooksLimit(Integer pageIndex,Integer pageSize);
+
+    Integer DeleteBookById(Integer id);
+
+    Integer UpdateBookById(String id,String title, String author, String price, String sales, String stock);
+
+    Books selectBookById(Integer id);
+    Integer CountBooks();
+
 }

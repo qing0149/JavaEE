@@ -1,7 +1,7 @@
 package com.llkj.controller;
 
-import com.llkj.dao.impl.BooksDaoImpl;
 import com.llkj.service.impl.BooksServiceImpl;
+import com.llkj.utils.ViewServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,16 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @ClassName BookServlet
+ * @ClassName BookAddServlet
  * @Description TODO
  * @Author qing
- * @Date 2022/11/7 14:47
+ * @Date 2022/11/9 8:53
  * @Version 1.0
  */
-@WebServlet("/addBooks")
-public class BookServlet extends HttpServlet {
-    BooksServiceImpl booksServiceImpl= new BooksServiceImpl();
-
+//@WebServlet("/addBooks")
+public class BookAddServlet extends ViewServlet {
+    BooksServiceImpl booksService= new BooksServiceImpl();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     }
@@ -28,15 +27,11 @@ public class BookServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String title = req.getParameter("title");
-        String author = req.getParameter("author");
         String price = req.getParameter("price");
+        String author = req.getParameter("author");
         String sales = req.getParameter("sales");
         String stock = req.getParameter("stock");
-        Integer integer = booksServiceImpl.addBooks(title,author,price,sales,stock);
-        if (integer>0){
-            resp.sendRedirect("/allBooks");
-        }else {
-            resp.sendRedirect("/allBooks");
-        }
+        Integer integer = booksService.addBooks(title, author, price, sales, stock);
+        resp.sendRedirect("/allBooks");
     }
 }

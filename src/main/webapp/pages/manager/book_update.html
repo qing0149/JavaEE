@@ -30,43 +30,44 @@
 </div>
 <div class="login_banner">
     <div class="register_form">
-        <form action="/addBooks" method="post">
+        <form action="/updateBook" method="post">
             <div class="form-item">
+                <input name="id" th:value="${book.id}" type="hidden">
                 <div>
                     <label>名称:</label>
-                    <input type="text" name="title" placeholder="请输入名称"/>
+                    <input th:value="${book.title}" type="text" name="title" placeholder="请输入名称"/>
                 </div>
                 <span class="errMess" style="visibility: visible;"
-                >请输入正确的名称</span
+                >请输入修改的名称</span
                 >
             </div>
             <div class="form-item">
                 <div>
                     <label>价格:</label>
-                    <input type="number" name="price" placeholder="请输入价格"/>
+                    <input th:value="${book.price}" type="number" name="price" placeholder="请输入价格"/>
                 </div>
-                <span class="errMess">请输入正确数字</span>
+                <span class="errMess">请输入修改的数字</span>
             </div>
             <div class="form-item">
                 <div>
                     <label>作者:</label>
-                    <input type="text" name="author" placeholder="请输入作者"/>
+                    <input th:value="${book.author}" type="text" name="author" placeholder="请输入作者"/>
                 </div>
-                <span class="errMess">请输入正确作者</span>
+                <span class="errMess">请输入修改的作者</span>
             </div>
             <div class="form-item">
                 <div>
                     <label>销量:</label>
-                    <input type="number" name="sales" placeholder="请输入销量"/>
+                    <input th:value="${book.sales}" type="number" name="sales" placeholder="请输入销量"/>
                 </div>
-                <span class="errMess">请输入正确销量</span>
+                <span class="errMess">请输入修改的销量</span>
             </div>
             <div class="form-item">
                 <div>
                     <label>库存:</label>
-                    <input type="number" name="stock" placeholder="请输入库存"/>
+                    <input th:value="${book.stock}" type="number" name="stock" placeholder="请输入库存"/>
                 </div>
-                <span class="errMess">请输入正确库存</span>
+                <span class="errMess">请输入修改的库存</span>
             </div>
 
             <button class="btn">提交</button>
