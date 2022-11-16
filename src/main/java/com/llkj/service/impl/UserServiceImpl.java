@@ -12,14 +12,30 @@ import com.llkj.service.UserService;
  * @Version 1.0
  */
 public class UserServiceImpl implements UserService {
-    UsersDaoImpl usersDaoImpl=new UsersDaoImpl();
+    UsersDaoImpl usersDao=new UsersDaoImpl();
     @Override
     public Users login(String name, String password) {
-        return usersDaoImpl.login(name,password);
+        return usersDao.login(name,password);
     }
 
     @Override
     public int register(String name, String password, String email) {
-        return usersDaoImpl.register(name, password, email);
+        return usersDao.register(name, password, email);
+    }
+
+    @Override
+    public Users findUserByName(String name) {
+        Users users = usersDao.findUserByName(name);
+        return users;
+    }
+
+    @Override
+    public Boolean findUserIfExist(String name) {
+        Users users = usersDao.findUserByName(name);
+        if (users!=null){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

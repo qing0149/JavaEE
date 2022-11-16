@@ -1,5 +1,6 @@
 package com.llkj.controller;
 
+import com.llkj.bean.Users;
 import com.llkj.dao.impl.UsersDaoImpl;
 import com.llkj.utils.MD5Util;
 import com.llkj.utils.ViewServlet;
@@ -9,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -44,19 +46,35 @@ public class LoginServlet extends ViewServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        String username = (String)session.getAttribute("username");
+        String password = (String)session.getAttribute("password");
+//        String users = (String)session.getAttribute("users");
+
+        Users login = usersDaoImpl.login(username, password);
+        if (login!=null){
+            processTemplate("user/login_success", req, resp);
+        }else {
+            processTemplate("user/login", req, resp);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        /*
+        request请求单次请求
+        session存储服务器端口，是多次请求，默认设置时间半小时，
+         */
         System.out.println("dopost");
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String encode = MD5Util.encode(password);
-        if (usersDaoImpl.login(username, encode) != null) {
-//            resp.sendRedirect("/pages/user/login_success.html");
+        HttpSession session = req.getSession();
+        Users users = usersDaoImpl.login(username, encode);
+        if (users != null) {
+            session.setAttribute("users",users);
             processTemplate("user/login_success", req, resp);
         } else {
-
             resp.setContentType("text/html;charset=utf-8");
             PrintWriter pw = resp.getWriter();
             pw.write("<script type='text/javascript'>" +

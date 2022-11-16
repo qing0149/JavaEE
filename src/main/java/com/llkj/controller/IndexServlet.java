@@ -36,7 +36,7 @@ public class IndexServlet extends ViewServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pageIndex = req.getParameter("pageIndex");
-        PageUtils<Books> booksPage = new PageUtils<>();
+        PageUtils<Books> booksPage = null;
         if (pageIndex==null){
             booksPage = booksService.selectAllBooksLimit(1);
         }else {

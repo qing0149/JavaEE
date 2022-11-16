@@ -12,4 +12,5 @@ import com.llkj.bean.Users;
 public interface UsersDao {
     Users login(String name, String password);
     int register(String name,String password,String email);
+    Users findUserByName(String name);
 }

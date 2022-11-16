@@ -20,8 +20,9 @@ import java.io.PrintWriter;
  * @Version 1.0
  */
 @WebServlet(value = "/reguser")
-public class RegUserServlet  extends ViewServlet {
-    UsersDaoImpl usersDaoImpl=new UsersDaoImpl();
+public class RegUserServlet extends ViewServlet {
+    UsersDaoImpl usersDaoImpl = new UsersDaoImpl();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     }
@@ -31,19 +32,33 @@ public class RegUserServlet  extends ViewServlet {
         String uname = req.getParameter("uname");
         String upass = req.getParameter("upass");
         String email = req.getParameter("email");
-        String encode = MD5Util.encode(upass);
-        int register = usersDaoImpl.register(uname, encode, email);
-        if (register>0) {
+        String code = req.getParameter("code");
+        String sessionKey = (String) req.getSession().getAttribute("KAPTCHA_SESSION_KEY");
+        if (code.equals(sessionKey)) {
+            String encode = MD5Util.encode(upass);
+            int register = usersDaoImpl.register(uname, encode, email);
+            if (register > 0) {
 //            resp.sendRedirect("/pages/user/regist_success.html");
-            processTemplate("user/regist_success",req,resp);
-        }else {
-            PrintWriter pw = resp.getWriter();
-            pw.write("" +
-                    "<script type='text/javascript'>" +
-                    "alert('用户名重复请切换一个')" +
-                    "location.href='regist.html'"+
-                    "</script>");
-            pw.close();
+                resp.setContentType("text/html;charset=utf-8");
+                resp.getWriter().write(
+                        "<script type='text/javascript'>" +
+                                "alert('注册成功返回登陆页面')" +
+                                "location.href='/pages/user/tologin'" +
+                                "</script>"
+                );
+                processTemplate("user/login", req, resp);
+            } else {
+                PrintWriter pw = resp.getWriter();
+                pw.write("" +
+                        "<script type='text/javascript'>" +
+                        "alert('用户名重复请切换一个')" +
+                        "location.href='regist.html'" +
+                        "</script>");
+                pw.close();
+            }
+        } else {
+            req.setAttribute("codeerr", "验证码不正确，注册失败");
+            processTemplate("user/regist", req, resp);
         }
     }
 }

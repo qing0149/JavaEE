@@ -16,7 +16,7 @@
         <param-name>view-suffix</param-name>
         <param-value>.html</param-value>
     </context-param>
-<!--    定义servlet进行吃实话-->
+    <!--    定义servlet进行吃实话-->
     <!--
         登录请求和处理类servlet的对应关系
         servlet自定义
@@ -29,7 +29,7 @@
         <servlet-class>
             com.llkj.controller.LoginServlet
         </servlet-class>
-<!--        配置初始化值-->
+        <!--        配置初始化值-->
         <init-param>
             <param-name>code</param-name>
             <param-value>utf-8</param-value>
@@ -40,6 +40,26 @@
         <url-pattern>
             /pages/user/tologin
         </url-pattern>
+    </servlet-mapping>
+<!--    生成图片验证码-->
+    <servlet>
+        <servlet-name>
+            al
+        </servlet-name>
+        <servlet-class>
+            com.google.code.kaptcha.servlet.KaptchaServlet
+        </servlet-class>
+<!--        不显示图片框
+    通过session存值使用KAPTCHA_SESSION_KEY
+-->
+        <init-param>
+            <param-name>kaptcha.border</param-name>
+            <param-value>no</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>al</servlet-name>
+        <url-pattern>/getcheckcode</url-pattern>
     </servlet-mapping>
 
 </web-app>

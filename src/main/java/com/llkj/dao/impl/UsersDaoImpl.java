@@ -13,7 +13,7 @@ import java.sql.*;
  * @Date 2022/11/5 10:26
  * @Version 1.0
  */
-public class UsersDaoImpl extends DbutilsTools implements UsersDao {
+public class UsersDaoImpl extends DbutilsTools<Users> implements UsersDao {
 
     @Override
     public Users login(String name, String password) {
@@ -66,5 +66,14 @@ public class UsersDaoImpl extends DbutilsTools implements UsersDao {
              return update;
         }
         return update;
+    }
+
+    @Override
+    public Users findUserByName(String name) {
+        String sql="select id,username,password,email\n" +
+                "from users\n" +
+                "where username=?";
+        Users users = getBean(Users.class, sql, name);
+        return users;
     }
 }

@@ -5,7 +5,8 @@
     <title>尚硅谷会员注册页面</title>
     <link type="text/css" rel="stylesheet" href="../../static/css/style.css" />
     <link rel="stylesheet" href="../../static/css/register.css" />
-    <script type="text/javascript" src="../../static//script/vue.js"></script>
+    <script type="text/javascript" src="../../static/script/vue.js"></script>
+    <script type="text/javascript" src="../../static/script/axios.js"></script>
     <style type="text/css">
       .login_form {
         height: 420px;
@@ -28,7 +29,7 @@
           <div class="form-item">
             <div>
               <label>用户名称:</label>
-          <input v-on:blur="checkname" name="uname" v-model="username" type="text" placeholder="请输入用户名" />
+          <input v-on:blur="checkname"name="uname" v-model="username" type="text" placeholder="请输入用户名" />
             </div>
             <span class="errMess">{{username_err}}</span>
           </div>
@@ -58,11 +59,11 @@
             <div>
               <label>验证码:</label>
               <div class="verify">
-                <input v-on:blur="checkcode" v-model="code" type="text" placeholder="" />
-                <img src="../../static/img/code.bmp" alt="" height="50px"/>
+                <input name="code" v-on:blur="checkcode" v-model="code" type="text" placeholder="" />
+                <img :src="codeimg" @click="changimg" alt="" height="50px"/>
               </div>
             </div>
-            <span class="errMess">{{codeerr}}</span>
+            <span th:text="${codeerr}" class="errMess"></span>
           </div>
           <button class="btn">注册</button>
         </form>
@@ -88,19 +89,35 @@
         email:"",
         eml_err:"",
         code:"",
+        codeimg:"/getcheckcode",
         codeerr:""
       },
       methods:{
         checkname:function(){
           var reg=/^[a-zA-Z0-9]{6,16}$/;
-          
           if(reg.test(this.username)){
-            this.username_err="√"
+            axios({
+              method:"post",
+              url:"/ajaxusername",
+              params:{
+                "uname":this.username
+              }
+            }).then(resp=>{
+              if (resp.data!=null){
+                this.username_err=resp.data
+              }else {
+                this.username_err="√"
+              }
+            })
             return true;
           }else{
             this.username_err="用户名应为6~16位数组和字母组成"
             return false;
           }
+        },
+        changimg(){
+          //浏览器有惰性，如果和之前的值一致就会导致不加载
+          this.codeimg="/getcheckcode?k1="+Math.random();
         },
         chenkpassword:function(){
           var reg=/^\w{6,}$/;
